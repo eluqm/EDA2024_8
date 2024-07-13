@@ -76,4 +76,24 @@ public class SongManager {
         }
     }
 
+    public List<Song> getSongsByArtist(String artistName) {
+        return artistMap.getOrDefault(artistName.toLowerCase(), new ArrayList<>());
+    }
+
+    public List<Song> getSongsBySongName(String songName) {
+        return songNameMap.getOrDefault(songName.toLowerCase(), new ArrayList<>());
+    }
+
+    public List<Song> getAllSongs() {
+        List<Song> allSongs = new ArrayList<>();
+        for (List<Song> songs : artistMap.values()) {
+            allSongs.addAll(songs);
+        }
+        return allSongs;
+    }
+
+    public int getSize() {
+        return artistMap.values().size();
+    }
+
 }
