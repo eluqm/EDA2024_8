@@ -1,0 +1,15 @@
+# Ignorar archivos compilados
+*.class
+
+# Ignorar archivo de datos CSV
+spotify_data.csv
+
+# Ignorar archivos de configuración de VS Code
+.vscode/
+
+# Ignorar archivos de log
+*.log
+
+# Ignorar otros archivos comunes de entorno
+.DS_Store
+
