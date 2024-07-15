@@ -65,4 +65,24 @@ public class Playlist {
         songs.add(song);
     }
 
+    public void removeSong(Song song) {
+        songs.remove(song);
+    }
+
+    public DoublyLinkedList<Song> getSongs() {
+        return songs;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Lista de reproduccion: ").append(name).append("\n");
+        Node<Song> current = songs.getHead();
+        while (current != null) {
+            sb.append(current.getData().toString()).append("\n");
+            current = current.getNext();
+        }
+        return sb.toString();
+    }
+
 }
