@@ -64,5 +64,12 @@ public class Song {
                Objects.equals(popularity, song.popularity) &&
                Objects.equals(year, song.year);
     }
-
+	@Override
+    public int hashCode() {
+        return Objects.hash(name_track, id_track, artist_track, popularity, year);
+    }
+    
+    public String toString(){
+        return "Nombre: " + getName_track() + ", Artista: " + getArtist_track() + ", ID: " + getId_track() + ", Popularity: " + getPopularity() + ", year: " + getYear();
+    }
 }
