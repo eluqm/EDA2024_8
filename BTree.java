@@ -61,5 +61,7 @@ public class BTree {
         x.children.add(i + 1, z);
         x.keys.add(i, y.keys.remove(t - 1));
     }
-   
+    public void print() {
+        print(root, "");
+    }
 }
