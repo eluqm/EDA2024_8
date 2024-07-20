@@ -61,14 +61,29 @@ public class DoublyLinkedList<T> {
         return current;
     }
 
+    // Método para obtener un elemento en una posición específica
     public T get(int index) {
         return getNode(index).getData();
     }
 
+    // Método para obtener el primer nodo (head) de la lista
     public Node<T> getHead() {
         return head;
     }
 
+    public void concatenate(DoublyLinkedList<T> otherList) {
+        if (otherList.head == null) {
+            return; // La lista a concatenar está vacía
+        }
+        
+        if (this.head == null) {
+            // La lista actual está vacía, simplemente asigna la otra lista
+            this.head = cloneNodes(otherList.head);
+            this.tail = findTail(this.head);
+        }
+        this.size += otherList.size;
+    }
+        
     // Método para mostrar la lista
     public void display() {
         Node<T> current = head;
