@@ -64,4 +64,19 @@ public class BTree {
     public void print() {
         print(root, "");
     }
+    private void getAllKeys(BTreeNode node, DoublyLinkedList<Song> result) {
+        if (node != null) {
+            // Recorre todos los hijos del nodo actual
+            for (int i = 0; i < node.keys.size(); i++) {
+                if (!node.isLeaf) {
+                    getAllKeys(node.children.get(i), result);
+                }
+                result.add(node.keys.get(i));
+            }
+            // Procesa el último hijo, si no es una hoja
+            if (!node.isLeaf) {
+                getAllKeys(node.children.get(node.children.size() - 1), result);
+            }
+        }
+    }
 }
