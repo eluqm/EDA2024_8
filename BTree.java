@@ -10,6 +10,19 @@ public class BTree {
         this.comparator = comparator;
     }
 
+    public void insert(Song song) {
+        BTreeNode r = root;
+        if (r.keys.size() == 2 * t - 1) {
+            BTreeNode s = new BTreeNode(false);
+            s.children.add(r);
+            root = s;
+            splitChild(s, 0);
+            insertNonFull(s, song);
+        } else {
+            insertNonFull(r, song);
+        }
+    }
+
     private void insertNonFull(BTreeNode x, Song k) {
         int i = x.keys.size() - 1;
         if (x.isLeaf) {
