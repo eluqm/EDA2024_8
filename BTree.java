@@ -64,6 +64,12 @@ public class BTree {
     public void print() {
         print(root, "");
     }
+
+    public DoublyLinkedList<Song> getAllKeys() {
+        DoublyLinkedList<Song> result = new DoublyLinkedList<>();
+        getAllKeys(root, result);
+        return result;
+    }
     private void getAllKeys(BTreeNode node, DoublyLinkedList<Song> result) {
         if (node != null) {
             // Recorre todos los hijos del nodo actual
