@@ -53,5 +53,16 @@ public class Song {
     public void setYear(String year) {
         this.year = year;
     }
-    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Song song = (Song) o;
+        return Objects.equals(name_track, song.name_track) &&
+               Objects.equals(id_track, song.id_track) &&
+               Objects.equals(artist_track, song.artist_track) &&
+               Objects.equals(popularity, song.popularity) &&
+               Objects.equals(year, song.year);
+    }
+
 }
