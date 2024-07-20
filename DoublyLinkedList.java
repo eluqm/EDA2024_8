@@ -107,6 +107,11 @@ public class DoublyLinkedList<T> {
             // La lista actual está vacía, simplemente asigna la otra lista
             this.head = cloneNodes(otherList.head);
             this.tail = findTail(this.head);
+        } else {
+            // Enlaza el final de la lista actual con el principio de la otra lista
+            this.tail.setNext(cloneNodes(otherList.head));
+            this.tail.getNext().setPrev(this.tail);
+            this.tail = findTail(this.tail.getNext());
         }
         this.size += otherList.size;
     }
