@@ -122,6 +122,9 @@ public class DoublyLinkedList<T> {
         size = 0;
     }
     
+    public boolean isEmpty() {
+        return head == null; 
+    }
     // Método para mostrar la lista
     public void display() {
         Node<T> current = head;
