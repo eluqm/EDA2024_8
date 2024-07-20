@@ -1,3 +1,4 @@
+import java.util.function.Predicate;
 public class DoublyLinkedList<T> {
     private Node<T> head;
     private Node<T> tail;
@@ -137,7 +138,7 @@ public class DoublyLinkedList<T> {
             current = next; // Continuar con el siguiente nodo
         }
     }
-    
+
     public void clear() {
         head = null;
         tail = null;
