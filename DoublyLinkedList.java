@@ -71,17 +71,31 @@ public class DoublyLinkedList<T> {
         return head;
     }
 
-    public void concatenate(DoublyLinkedList<T> otherList) {
-        if (otherList.head == null) {
-            return; // La lista a concatenar está vacía
-        }
+    private Node<T> cloneNodes(Node<T> head) {
+        Node<T> current = head;
+        Node<T> newHead = null;
+        Node<T> newTail = null;
         
-        if (this.head == null) {
-            // La lista actual está vacía, simplemente asigna la otra lista
-            this.head = cloneNodes(otherList.head);
-            this.tail = findTail(this.head);
+        while (current != null) {
+            Node<T> newNode = new Node<>(current.getData(), null, newTail);
+            if (newHead == null) {
+                newHead = newNode;
+            }
+            if (newTail != null) {
+                newTail.setNext(newNode);
+            }
+            newTail = newNode;
+            current = current.getNext();
         }
-        this.size += otherList.size;
+        return newHead;
+    }
+
+    private Node<T> findTail(Node<T> head) {
+        Node<T> current = head;
+        while (current != null && current.getNext() != null) {
+            current = current.getNext();
+        }
+        return current;
     }
         
     // Método para mostrar la lista
