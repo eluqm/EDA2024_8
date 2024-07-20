@@ -115,6 +115,13 @@ public class DoublyLinkedList<T> {
         }
         this.size += otherList.size;
     }
+
+    public void clear() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+    
     // Método para mostrar la lista
     public void display() {
         Node<T> current = head;
