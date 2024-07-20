@@ -85,4 +85,12 @@ public class BTree {
             }
         }
     }
+    private void print(BTreeNode node, String indent) {
+        System.out.println(indent + node.keys);
+        if (!node.isLeaf) {
+            for (BTreeNode child : node.children) {
+                print(child, indent + "  ");
+            }
+        }
+    }
 }
