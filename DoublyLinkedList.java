@@ -116,6 +116,28 @@ public class DoublyLinkedList<T> {
         this.size += otherList.size;
     }
 
+    public void removeIf(Predicate<T> predicate) {
+        Node<T> current = head;
+        while (current != null) {
+            Node<T> next = current.getNext(); // Guardar el siguiente nodo
+            if (predicate.test(current.getData())) {
+                // Si el nodo cumple con el predicado, eliminarlo
+                if (current.getPrev() != null) {
+                    current.getPrev().setNext(current.getNext());
+                } else {
+                    head = current.getNext(); // Si es el primer nodo
+                }
+                if (current.getNext() != null) {
+                    current.getNext().setPrev(current.getPrev());
+                } else {
+                    tail = current.getPrev(); // Si es el último nodo
+                }
+                size--;
+            }
+            current = next; // Continuar con el siguiente nodo
+        }
+    }
+    
     public void clear() {
         head = null;
         tail = null;
