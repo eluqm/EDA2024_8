@@ -97,6 +97,34 @@ public class Interfaz extends Application {
             }
         });
 
+        // Load and resize icons
+        Image searchIcon = new Image(new FileInputStream("src/main/resources/icons/search_icon.png"), 20, 20, true, true);
+        Image addIcon = new Image(new FileInputStream("src/main/resources/icons/add_icon.png"), 20, 20, true, true);
+        Image updateIcon = new Image(new FileInputStream("src/main/resources/icons/update_icon.png"), 20, 20, true, true);
+        Image deleteIcon = new Image(new FileInputStream("src/main/resources/icons/delete_icon.png"), 20, 20, true, true);
+
+        Button searchButton = new Button();
+        searchButton.setGraphic(new ImageView(searchIcon));
+        searchButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String searchText = textField.getText().trim();
+                if (searchText.isEmpty()) {
+                    String valores = comboBox.getValue();
+                    orderingSearch(table, songs, valores);
+                } else {
+                    DoublyLinkedList<Song> searchResults = null;
+                    if (activateEnter) {
+                        searchResults = music.search(searchText);
+                    } else {
+                        searchResults = music.searchByPrefix(searchText);
+                    }
+                    String valores = comboBox.getValue();
+                    orderingSearch(table, searchResults, valores);
+                }
+            }
+        });
+
 }
 
 
