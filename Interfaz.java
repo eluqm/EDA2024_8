@@ -48,7 +48,21 @@ public class Interfaz extends Application {
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
-        
+        DoublyLinkedList<Song> songs = music.getCombinacion();
+
+        TextField textField = new TextField();
+        textField.setPromptText("Search");
+
+        TableView<Song> table = new TableView<>();
+
+        ComboBox<String> comboBox = new ComboBox<>();
+        ObservableList<String> options = FXCollections.observableArrayList(
+            "Artist",
+            "Name",
+            "Popularity",
+            "Year"
+        );
+ 
 }
 
 
