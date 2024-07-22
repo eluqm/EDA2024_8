@@ -347,6 +347,159 @@ public class Interfaz extends Application {
         return doublyLinkedList;
     }
     
+    public void orderingSearch(TableView<Song> table, DoublyLinkedList<Song> searchResults, String valores){
+        BTree bTree;
+        ObservableList<Song> tableItems = table.getItems();
+        if (valores != null) {
+            switch (valores) {
+                case "Artist":
+                    bTree = new BTree(4, SongComparate.byArtist());
+                    break;
+                case "Name":
+                    bTree = new BTree(4, SongComparate.byName());
+                    break;
+                case "Popularity":
+                    bTree = new BTree(4, SongComparate.byPopularity());
+                    break;
+                case "Year":
+                    bTree = new BTree(4, SongComparate.byYear());
+                    break;
+                default:
+                    System.out.println("Unknown option selected"); 
+                    return;
+            } 
+            Node<Song> current = searchResults.getHead();
+            while (current != null) {
+                Song song = current.getData();
+                bTree.insert(song);
+                current = current.getNext();
+            }
+            DoublyLinkedList<Song> allSongs = bTree.getAllKeys();
+            updateTable(table, allSongs);
+        } else {
+            System.out.println("No option selected in ComboBox");
+            updateTable(table, searchResults);
+        }
+        
+    }
+    
+    private void showAddMusicDialog(Stage owner, Trie music) {
+        Dialog<Song> dialog = new Dialog<>();
+        dialog.initOwner(owner);
+        dialog.setTitle("Add New Music");
+
+        VBox vbox = new VBox();
+        Label name_track = new Label("Name:");
+        TextField nameField = new TextField();
+        nameField.setPromptText("Song Name");
+        Label artist_track = new Label("Artist:");
+        TextField artistField = new TextField();
+        artistField.setPromptText("Artist");
+        Label popularity_track = new Label("Popularity:");
+        TextField popularityField = new TextField();
+        popularityField.setPromptText("Popularity");
+        Label year_track = new Label("Year:");
+        TextField yearField = new TextField();
+        yearField.setPromptText("Year");
+        Label id_track = new Label("ID:");
+        TextField idField = new TextField();
+        idField.setPromptText("ID");
+        
+
+        vbox.getChildren().addAll(name_track, nameField, artist_track, artistField, popularity_track, popularityField, year_track, yearField, id_track, idField);
+
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        dialog.getDialogPane().setContent(vbox);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == saveButtonType) {
+                return new Song(
+                    nameField.getText(),
+                    idField.getText(),
+                    artistField.getText(),
+                    popularityField.getText(),
+                    yearField.getText()
+                );
+            }
+            return null;
+        });
+
+        Optional<Song> result = dialog.showAndWait();
+        result.ifPresent(song -> {
+            music.insert(song.getName_track(), song);
+            updateTable((TableView<Song>) owner.getScene().lookup("#table"), music.getCombinacion());
+        });
+    }
+    private void showUpdateMusicDialog(Stage owner, Trie music, Song song){
+        Dialog<Song> dialog = new Dialog<>();
+        dialog.initOwner(owner);
+        dialog.setTitle("Update Music");
+
+        VBox vbox = new VBox();
+        Label name_track = new Label("Name:");
+        TextField nameField = new TextField();
+        nameField.setPromptText("Song Name");
+        nameField.setText(song.getName_track());
+        Label artist_track = new Label("Artist:");
+        TextField artistField = new TextField();
+        artistField.setPromptText("Artist");
+        artistField.setText(song.getArtist_track());
+        Label popularity_track = new Label("Popularity:");
+        TextField popularityField = new TextField();
+        popularityField.setPromptText("Popularity");
+        popularityField.setText(song.getPopularity());
+        Label year_track = new Label("Year:");
+        TextField yearField = new TextField();
+        yearField.setPromptText("Year");
+        yearField.setText(song.getYear());
+        Label id_track = new Label("ID:");
+        TextField idField = new TextField();
+        idField.setPromptText("ID");
+        idField.setText(song.getId_track());
+        
+        vbox.getChildren().addAll(name_track, nameField, artist_track, artistField, popularity_track, popularityField, year_track, yearField, id_track, idField);
+
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        dialog.getDialogPane().setContent(vbox);
+        
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == saveButtonType) {
+                return new Song(
+                    nameField.getText(),
+                    idField.getText(),
+                    artistField.getText(),
+                    popularityField.getText(),
+                    yearField.getText()
+                );
+            }
+            return null;
+        });
+
+        Optional<Song> result = dialog.showAndWait();
+        result.ifPresent(updatedSong -> {
+            music.update(song, updatedSong); 
+            updateTable((TableView<Song>) owner.getScene().lookup("#table"), music.getCombinacion());
+        });
+    }
+    private Song findSongByName(String name, Trie music) {
+        // Buscar en el Trie
+        DoublyLinkedList<Song> searchResults = music.search(name);
+        if (searchResults != null) {
+            Node<Song> current = searchResults.getHead();
+            while (current != null) {
+                Song song = current.getData();
+                if (song.getName_track().equals(name)) {
+                    return song;
+                }
+                current = current.getNext();
+            }
+        }
+        return null;
+    }
 }
 
 
