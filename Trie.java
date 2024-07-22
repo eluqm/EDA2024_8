@@ -29,4 +29,17 @@ public class Trie {
         }
         return node.isEndOfSong ? node.songInfoList : null;
     }
+
+    public DoublyLinkedList<Song> searchByPrefix(String prefix) {
+        TrieNode node = root;
+        for (char c : prefix.toCharArray()) {
+            node = node.children.get(c);
+            if (node == null) {
+                return new DoublyLinkedList<>(); // Retorna lista vacía si el prefijo no se encuentra
+            }
+        }
+        DoublyLinkedList<Song> results = new DoublyLinkedList<>();
+        collectAllSongs(node, results);
+        return results;
+    }
 }
