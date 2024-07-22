@@ -56,4 +56,41 @@ public class Trie {
             collectAllSongs(child, results);
         }
     }
+
+    public void delete(Song song) {
+        delete(root, song, 0);
+    }
+
+    private boolean delete(TrieNode node, Song songToRemove, int index) {
+        if (index == songToRemove.getName_track().length()) {
+            if (!node.isEndOfSong) {
+                return false; // No song exists at this node
+            }
+            // Eliminar solo la canción con el ID específico
+            node.songInfoList.removeIf(song -> song.getId_track().equals(songToRemove.getId_track()) &&
+                    song.getName_track().equals(songToRemove.getName_track()) &&
+                    song.getArtist_track().equals(songToRemove.getArtist_track()) &&
+                    song.getPopularity().equals(songToRemove.getPopularity()) &&
+                    song.getYear().equals(songToRemove.getYear()));
+            if (node.songInfoList.isEmpty()) {
+                node.isEndOfSong = false;
+            }
+            return node.children.isEmpty() && !node.isEndOfSong;
+        }
+
+        char c = songToRemove.getName_track().charAt(index);
+        TrieNode childNode = node.children.get(c);
+        if (childNode == null) {
+            return false; // No such song exists
+        }
+
+        boolean shouldDeleteChild = delete(childNode, songToRemove, index + 1);
+
+        if (shouldDeleteChild) {
+            node.children.remove(c);
+            return node.children.isEmpty() && !node.isEndOfSong;
+        }
+
+        return false;
+    }
 }
