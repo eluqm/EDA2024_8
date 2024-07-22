@@ -125,6 +125,65 @@ public class Interfaz extends Application {
             }
         });
 
+        Button addMusicButton = new Button();
+        addMusicButton.setGraphic(new ImageView(addIcon));
+        addMusicButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showAddMusicDialog(primaryStage, music);
+            }
+        });
+
+        textField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    activateEnter = true;
+                } else if (event.getCode() != KeyCode.SHIFT && event.getCode() != KeyCode.CONTROL &&
+                        event.getCode() != KeyCode.ALT && event.getCode() != KeyCode.META) {
+                    activateEnter = false;
+                }
+                searchButton.fire();
+            }
+        });
+
+        TableColumn<Song, String> nameColumn = new TableColumn<>("Name");
+        TableColumn<Song, String> artistColumn = new TableColumn<>("Artist");
+        TableColumn<Song, String> popularityColumn = new TableColumn<>("Popularity");
+        TableColumn<Song, String> yearColumn = new TableColumn<>("Year");
+        TableColumn<Song, String> idColumn = new TableColumn<>("ID");
+
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name_track"));
+        artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist_track"));
+        popularityColumn.setCellValueFactory(new PropertyValueFactory<>("popularity"));
+        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id_track"));
+
+        TableColumn<Song, Void> deleteColumn = new TableColumn<>("Delete");
+        deleteColumn.setCellFactory(param -> new TableCell<Song, Void>() {
+            private final Button deleteButton = new Button();
+
+            {
+                deleteButton.setGraphic(new ImageView(deleteIcon));
+                deleteButton.setOnAction(event -> {
+                    Song song = getTableView().getItems().get(getIndex());
+                    table.getItems().remove(song);
+                    music.delete(song);
+                    System.out.println("Deleted: " + song.getName_track());
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
+                }
+            }
+        });
+
 }
 
 
