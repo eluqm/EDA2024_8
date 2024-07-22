@@ -62,7 +62,41 @@ public class Interfaz extends Application {
             "Popularity",
             "Year"
         );
- 
+        comboBox.setItems(options);
+        comboBox.setPromptText("Select an option");
+        comboBox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String selectedOption = comboBox.getValue();
+                if (selectedOption != null) {
+                    BTree bTree;
+                    ObservableList<Song> tableItems = table.getItems();
+                    switch (selectedOption) {
+                        case "Artist":
+                            bTree = new BTree(4, SongComparate.byArtist());
+                            break;
+                        case "Name":
+                            bTree = new BTree(4, SongComparate.byName());
+                            break;
+                        case "Popularity":
+                            bTree = new BTree(4, SongComparate.byPopularity());
+                            break;
+                        case "Year":
+                            bTree = new BTree(4, SongComparate.byYear());
+                            break;
+                        default:
+                            System.out.println("Unknown option selected");
+                            return;
+                    }
+                    for (Song song : tableItems) {
+                        bTree.insert(song);
+                    }
+                    DoublyLinkedList<Song> allSongs = bTree.getAllKeys();
+                    updateTable(table, allSongs);
+                }
+            }
+        });
+
 }
 
 
