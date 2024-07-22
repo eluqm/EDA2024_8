@@ -93,4 +93,13 @@ public class Trie {
 
         return false;
     }
+
+    public void update(Song song, Song newSongInfo) {
+        if (song.equals(newSongInfo)) {
+            return;
+        } else {
+            insert(newSongInfo.getName_track(), newSongInfo);
+            delete(song);
+        }
+    }
 }
