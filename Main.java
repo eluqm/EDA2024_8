@@ -4,19 +4,21 @@ import java.util.Scanner;
 
 class Main{
     public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
         String csvFile = "spotify_data.csv";
+        String prueba = scanner.nextLine();
         try{
             File archivo = new File(csvFile);
             Scanner sc = new Scanner(archivo);
-            int fila = 0;
-            while (sc.hasNextLine() && fila < 50){
+            while (sc.hasNextLine()){
                 String siguiente = sc.nextLine();
                 String[] values = siguiente.split(",");
-                for (String value : values){
-                    System.out.print(value + " ");
+                if(values[2].equals(prueba)){
+                  for (String value : values){
+                      System.out.print(value + " ");
+                  }
+                  System.out.println();
                 }
-                System.out.println();
-                fila++;
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -1,0 +1,55 @@
+/* styles.css */
+
+.root {
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-alignment: center;
+    -fx-font-family: "Arial";
+}
+
+.text-field {
+    -fx-font-size: 14px;
+    -fx-pref-width: 300px;
+    -fx-padding: 10;
+}
+
+.combo-box {
+    -fx-font-size: 14px;
+    -fx-pref-width: 300px;
+    -fx-padding: 10;
+}
+
+.button {
+    -fx-font-size: 14px;
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+    -fx-padding: 10;
+}
+
+.table-view {
+    -fx-font-size: 14px;
+}
+
+.table-column-header {
+    -fx-font-size: 14px;
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+}
+
+.dialog-pane {
+    -fx-background-color: #F0F0F0;
+}
+
+.label {
+    -fx-font-size: 14px;
+}
+
+.dialog-pane .button-bar {
+    -fx-background-color: #F0F0F0;
+}
+
+.dialog-pane .button {
+    -fx-font-size: 14px;
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+}
