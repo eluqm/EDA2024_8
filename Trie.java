@@ -116,4 +116,14 @@ public class Trie {
             traverse(entry.getValue());
         }
     }
+
+    public DoublyLinkedList<Song> getCombinacion() {
+        this.combinacion.clear();
+        traverse(root);
+        return combinacion;
+    }
+
+    public void setCombinacion(DoublyLinkedList<Song> combinacion) {
+        this.combinacion = combinacion;
+    }
 }
