@@ -26,4 +26,15 @@ public class SongComparate {
             }
         };
     }
+    public static Comparator<Song> byYear(){
+        return (s1, s2) -> {
+            try {
+                int year1 = Integer.parseInt(s1.getYear());
+                int year2 = Integer.parseInt(s2.getYear());
+                return Integer.compare(year2, year1);
+            } catch (NumberFormatException e) {
+                return s2.getYear().compareTo(s1.getYear());
+            }
+        };
+    }
 }
