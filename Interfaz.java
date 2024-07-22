@@ -319,6 +319,33 @@ public class Interfaz extends Application {
             current = current.getNext();
         }
     }
+    private void printSearchResults(DoublyLinkedList<Song> searchResults) {
+        if (searchResults == null || searchResults.getHead() == null) {
+            System.out.println("No search results found.");
+            return;
+        }
+        Node<Song> current = searchResults.getHead();
+        while (current != null) {
+            System.out.println(current.getData());
+            current = current.getNext();
+        }
+    }
+    private void printTableItems(TableView<Song> table) {
+        // Obtiene la lista observable de elementos actuales en la tabla
+        ObservableList<Song> items = table.getItems();
+
+        // Itera sobre la lista y imprime cada elemento
+        for (Song song : items) {
+            System.out.println(song);
+        }
+    }
+    public DoublyLinkedList<Song> convertToDoublyLinkedList(ObservableList<Song> observableList) {
+        DoublyLinkedList<Song> doublyLinkedList = new DoublyLinkedList<>();
+        for (Song song : observableList) {
+            doublyLinkedList.add(song); // Asumiendo que DoublyLinkedList tiene un método add
+        }
+        return doublyLinkedList;
+    }
     
 }
 
