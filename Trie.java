@@ -42,4 +42,18 @@ public class Trie {
         collectAllSongs(node, results);
         return results;
     }
+
+    private void collectAllSongs(TrieNode node, DoublyLinkedList<Song> results) {
+        if (node == null) {
+            return;
+        }
+
+        if (node.isEndOfSong) {
+            results.concatenate(node.songInfoList);
+        }
+
+        for (TrieNode child : node.children.values()) {
+            collectAllSongs(child, results);
+        }
+    }
 }
