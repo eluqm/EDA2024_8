@@ -12,4 +12,7 @@ public class SongComparate {
     public static Comparator<Song> byArtist(){
         return Comparator.comparing(Song::getArtist_track);
     }
+    public static Comparator<Song> byName(){
+        return Comparator.comparing(Song::getName_track);
+    }
 }
