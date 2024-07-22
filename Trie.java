@@ -18,4 +18,15 @@ public class Trie {
         node.isEndOfSong = true;
         node.songInfoList.add(songInfo);
     }
+
+    public DoublyLinkedList<Song> search(String title) {
+        TrieNode node = root;
+        for (char c : title.toCharArray()) {
+            node = node.children.get(c);
+            if (node == null) {
+                return null;
+            }
+        }
+        return node.isEndOfSong ? node.songInfoList : null;
+    }
 }
