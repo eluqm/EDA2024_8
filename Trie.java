@@ -102,4 +102,18 @@ public class Trie {
             delete(song);
         }
     }
+
+    public void traverse(TrieNode node) {
+        if (node == null) {
+            return;
+        }
+
+        if (node.isEndOfSong) {
+            combinacion.concatenate(node.songInfoList);
+        }
+
+        for (Map.Entry<Character, TrieNode> entry : node.children.entrySet()) {
+            traverse(entry.getValue());
+        }
+    }
 }
