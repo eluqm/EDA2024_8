@@ -1,0 +1,278 @@
+/* General Styles */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #e0f7fa; /* Tonalidad celeste clara */
+}
+
+/* TextField Styles */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b3e5fc; /* Color azul claro para el borde */
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused {
+    -fx-border-color: #00acc1; /* Azul más oscuro para el borde cuando está enfocado */
+    -fx-border-width: 2px;
+}
+
+/* Button Styles */
+.button {
+    -fx-background-color: #ffffff; /* Fondo blanco */
+    -fx-text-fill: #00796b; /* Texto en verde azulado */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 5px 10px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0.5, 0, 1);
+    -fx-transition: all 0.3s ease;
+}
+
+.button:hover {
+    -fx-background-color: #b2ebf2; /* Fondo azul claro cuando se pasa el ratón */
+    -fx-text-fill: #004d40; /* Texto en verde oscuro */
+}
+
+.button:pressed {
+    -fx-background-color: #00838f; /* Fondo azul oscuro cuando se presiona */
+    -fx-effect: none;
+}
+
+/* TableView Styles */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b3e5fc; /* Color azul claro para el borde */
+    -fx-border-width: 1px;
+}
+
+.table-column {
+    -fx-font-weight: bold;
+    -fx-background-color: #e0f7fa; /* Fondo azul celeste claro */
+}
+
+/* TableCell Styles */
+.table-cell {
+    -fx-padding: 5px;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000; /* Color de texto por defecto */
+}
+
+.table-cell:selected {
+    -fx-background-color: #004d40; /* Fondo azul oscuro cuando se selecciona */
+    -fx-text-fill: #ffffff; /* Color del texto cuando se selecciona (blanco) */
+}
+
+.table-cell:hover {
+    -fx-background-color: #e0f2f1; /* Fondo azul claro cuando se pasa el ratón */
+}
+
+/* HBox and VBox Styles */
+.hbox {
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+}
+
+.vbox {
+    -fx-padding: 15px;
+}
+
+/* Dialog Styles */
+.dialog-pane {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b3e5fc; /* Color azul claro para el borde */
+    -fx-border-width: 1px;
+}
+
+.dialog-pane .button {
+    -fx-background-color: #00acc1; /* Azul oscuro */
+    -fx-text-fill: #ffffff;
+}
+
+.dialog-pane .button:hover {
+    -fx-background-color: #00796b; /* Verde azulado oscuro */
+}
+
+/* ImageView Styles */
+.image-view {
+    -fx-fit-width: 20px;
+    -fx-fit-height: 20px;
+}
+
+/* Add Animation */
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.button:hover {
+    animation: bounce 0.5s;
+}
+
+.button-container {
+    -fx-alignment: center; /* Centra los botones horizontalmente */
+    -fx-spacing: 10px; /* Espacio entre los botones */
+}
+
+/* Estilo para el ComboBox */
+.combo-box {
+    -fx-background-color: white; /* Fondo blanco para el ComboBox */
+    -fx-border-color: #b3e5fc; /* Color azul claro para el borde */
+    -fx-border-radius: 5px; /* Radio del borde para border-radius */
+    -fx-background-radius: 5px; /* Radio del fondo para border-radius */
+    -fx-padding: 5px; /* Padding interno */
+    -fx-alignment: center-left; /* Alineación del ComboBox a la izquierda */
+    -fx-min-width: 200px; /* Ancho mínimo del ComboBox */
+}
+
+/* Estilo para el botón de agregar */
+.add-button {
+    -fx-padding: 10px 20px; /* Padding del botón */
+    -fx-background-color: #4CAF50; /* Color de fondo verde */
+    -fx-text-fill: white; /* Color del texto */
+    -fx-border-radius: 5px; /* Radio del borde para border-radius */
+    -fx-background-radius: 5px; /* Radio del fondo para border-radius */
+    -fx-font-size: 14px; /* Tamaño de la fuente */
+}
+
+/* Estilo para el botón de búsqueda */
+.search-button {
+    -fx-padding: 10px 20px; /* Padding del botón */
+    -fx-background-color: #008CBA; /* Color de fondo azul */
+    -fx-text-fill: white; /* Color del texto */
+    -fx-border-radius: 5px; /* Radio del borde para border-radius */
+    -fx-background-radius: 5px; /* Radio del fondo para border-radius */
+    -fx-font-size: 14px; /* Tamaño de la fuente */
+}
+/* Tooltip Styles */
+.tooltip {
+    -fx-background-color: #333333; /* Fondo oscuro para Tooltip */
+    -fx-text-fill: #ffffff; /* Texto en blanco */
+    -fx-font-size: 12px; /* Tamaño de la fuente */
+    -fx-padding: 5px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+/* ProgressBar Styles */
+.progress-bar {
+    -fx-background-color: #e0f7fa; /* Fondo celeste claro */
+    -fx-accent: #00acc1; /* Color del progreso */
+    -fx-padding: 5px;
+    -fx-background-radius: 4px;
+}
+
+/* CheckBox Styles */
+.check-box {
+    -fx-text-fill: #00796b; /* Texto en verde azulado */
+}
+
+.check-box:selected {
+    -fx-background-color: #e0f2f1; /* Fondo celeste claro cuando está seleccionado */
+}
+
+.check-box:hover {
+    -fx-background-color: #b2dfdb; /* Fondo verde claro cuando se pasa el ratón */
+}
+
+/* RadioButton Styles */
+.radio-button {
+    -fx-text-fill: #00796b; /* Texto en verde azulado */
+}
+
+.radio-button:selected {
+    -fx-background-color: #e0f2f1; /* Fondo celeste claro cuando está seleccionado */
+}
+
+.radio-button:hover {
+    -fx-background-color: #b2dfdb; /* Fondo verde claro cuando se pasa el ratón */
+}
+
+/* ScrollPane Styles */
+.scroll-pane {
+    -fx-background-color: #ffffff; /* Fondo blanco */
+    -fx-border-color: #b3e5fc; /* Color azul claro para el borde */
+    -fx-border-width: 1px;
+    -fx-padding: 5px;
+}
+
+/* TextArea Styles */
+.text-area {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b3e5fc; /* Color azul claro para el borde */
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+.text-area:focused {
+    -fx-border-color: #00acc1; /* Azul más oscuro para el borde cuando está enfocado */
+    -fx-border-width: 2px;
+}
+
+/* Slider Styles */
+.slider {
+    -fx-background-color: #ffffff;
+}
+
+.slider .thumb {
+    -fx-background-color: #00acc1; /* Color del thumb */
+}
+
+.slider .track {
+    -fx-background-color: #e0f7fa; /* Fondo del track */
+}
+
+/* TabPane Styles */
+.tab-pane {
+    -fx-background-color: #ffffff; /* Fondo blanco para el TabPane */
+    -fx-border-color: #b3e5fc; /* Color azul claro para el borde */
+    -fx-border-width: 1px;
+}
+
+.tab-header-background {
+    -fx-background-color: #e0f7fa; /* Fondo azul celeste claro */
+}
+
+.tab-header .tab {
+    -fx-background-color: #ffffff; /* Fondo blanco para cada pestaña */
+    -fx-text-fill: #00796b; /* Texto en verde azulado */
+}
+
+.tab-header .tab:selected {
+    -fx-background-color: #b2dfdb; /* Fondo verde claro cuando está seleccionado */
+    -fx-text-fill: #004d40; /* Texto en verde oscuro cuando está seleccionado */
+}
+
+/* Menu Styles */
+.menu {
+    -fx-background-color: #ffffff; /* Fondo blanco para el menú */
+    -fx-border-color: #b3e5fc; /* Color azul claro para el borde */
+    -fx-border-width: 1px;
+}
+
+.menu-item {
+    -fx-text-fill: #00796b; /* Texto en verde azulado */
+}
+
+.menu-item:hover {
+    -fx-background-color: #e0f2f1; /* Fondo celeste claro cuando se pasa el ratón */
+}
+
+.menu-item:selected {
+    -fx-background-color: #004d40; /* Fondo azul oscuro cuando se selecciona */
+    -fx-text-fill: #ffffff; /* Texto blanco cuando se selecciona */
+}
