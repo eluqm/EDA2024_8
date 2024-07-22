@@ -310,6 +310,16 @@ public class Interfaz extends Application {
         primaryStage.show();
     }
 
+
+    private void updateTable(TableView<Song> table, DoublyLinkedList<Song> songs) {
+        table.getItems().clear();
+        Node<Song> current = songs.getHead();
+        while (current != null) {
+            table.getItems().add(current.getData());
+            current = current.getNext();
+        }
+    }
+    
 }
 
 
