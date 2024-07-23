@@ -31,6 +31,13 @@ public class MyGraph {
         return adjList.getOrDefault(node, new ArrayList<>());
     }
 
+    // Imprimir el grafo
+    public void printGraph() {
+        for (String node : adjList.keySet()) {
+            System.out.println(node + " -> " + adjList.get(node));
+        }
+    }
 
+    
 }
 
