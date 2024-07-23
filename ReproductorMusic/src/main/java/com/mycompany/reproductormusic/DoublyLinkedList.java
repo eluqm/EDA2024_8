@@ -4,6 +4,7 @@
  */
 package com.mycompany.reproductormusic;
 import java.util.function.Predicate;
+import java.util.Iterator;
 /**
  *
  * @author Usuario
@@ -154,6 +155,24 @@ public class DoublyLinkedList<T> {
     
     public boolean isEmpty() {
         return head == null; 
+    }
+    
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private Node<T> current = head;
+
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            @Override
+            public T next() {
+                T data = current.getData();
+                current = current.getNext();
+                return data;
+            }
+        };
     }
     // Método para mostrar la lista (opcional)
     public void display() {

@@ -23,6 +23,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.stage.Stage;
+import javafx.stage.Modality;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.Viewer;
+import javafx.application.Platform;
+
+
 
 
 
@@ -40,7 +50,7 @@ public class Interfaz extends Application {
         try (CSVReader reader = new CSVReader(new FileReader(csvFile))) {
             String line[];
             int count = 0;
-            while ((line = reader.readNext()) != null && count <= 50000) {
+            while ((line = reader.readNext()) != null && count <= 20000) {
                 Song cancion = new Song(line[2], line[3], line[1], line[4], line[5]);
                 music.insert(cancion.getName_track(), cancion);
                 count++;
@@ -57,10 +67,14 @@ public class Interfaz extends Application {
 
         ComboBox<String> comboBox = new ComboBox<>();
         ObservableList<String> options = FXCollections.observableArrayList(
-            "Artist",
-            "Name",
-            "Popularity",
-            "Year"
+            "Artist ->",
+            "Name ->",
+            "Popularity <-",
+            "Year <-",
+            "Artist <-",
+            "Name <-",
+            "Popularity ->",
+            "Year ->"
         );
         comboBox.setItems(options);
         comboBox.setPromptText("Select an option");
@@ -72,17 +86,29 @@ public class Interfaz extends Application {
                     BTree bTree;
                     ObservableList<Song> tableItems = table.getItems();
                     switch (selectedOption) {
-                        case "Artist":
+                        case "Artist ->":
                             bTree = new BTree(4, SongComparate.byArtist());
                             break;
-                        case "Name":
+                        case "Name ->":
                             bTree = new BTree(4, SongComparate.byName());
                             break;
-                        case "Popularity":
+                        case "Popularity <-":
                             bTree = new BTree(4, SongComparate.byPopularity());
                             break;
-                        case "Year":
+                        case "Year <-":
                             bTree = new BTree(4, SongComparate.byYear());
+                            break;
+                        case "Artist <-":
+                            bTree = new BTree(4, SongComparate.byArtistDescending());
+                            break;
+                        case "Name <-":
+                            bTree = new BTree(4, SongComparate.byNameDescending());
+                            break;
+                        case "Popularity ->":
+                            bTree = new BTree(4, SongComparate.byPopularityAscending());
+                            break;
+                        case "Year ->":
+                            bTree = new BTree(4, SongComparate.byYearAscending());
                             break;
                         default:
                             System.out.println("Unknown option selected");
@@ -108,16 +134,24 @@ public class Interfaz extends Application {
         searchButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                
                 String searchText = textField.getText().trim();
+                DoublyLinkedList<Song> searchResults = new DoublyLinkedList<>();
                 if (searchText.isEmpty()) {
                     String valores = comboBox.getValue();
                     orderingSearch(table, songs, valores);
                 } else {
-                    DoublyLinkedList<Song> searchResults = null;
                     if (activateEnter) {
                         searchResults = music.search(searchText);
+                        if (searchResults == null) {
+                            searchResults.add(new Song("No hay música disponible", "", "", "", ""));
+                        }
                     } else {
                         searchResults = music.searchByPrefix(searchText);
+                        if (searchResults.isEmpty()) {
+                            // Agrega un mensaje de que no hay música disponible
+                            searchResults.add(new Song("No hay música disponible", "", "", "", ""));
+                        }
                     }
                     String valores = comboBox.getValue();
                     orderingSearch(table, searchResults, valores);
@@ -275,13 +309,20 @@ public class Interfaz extends Application {
 
             return row;
         });
+        Button grapho = new Button("Colaboraciones");
+        grapho.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showCollaborationDialog(primaryStage, music);
+            }
+        });
         HBox buttonBox = new HBox();
         buttonBox.getStyleClass().add("button-container"); // Aplica el estilo CSS
         buttonBox.getChildren().addAll(textField,searchButton, addMusicButton);
         comboBox.getStyleClass().add("combo-box");
         // Crear el VBox para el resto de los componentes
         VBox root = new VBox();
-        root.getChildren().addAll(buttonBox, comboBox, table);
+        root.getChildren().addAll(buttonBox, comboBox, table, grapho);
         
         searchButton.getStyleClass().add("button");
         addMusicButton.getStyleClass().add("button");
@@ -352,22 +393,34 @@ public class Interfaz extends Application {
         ObservableList<Song> tableItems = table.getItems();
         if (valores != null) {
             switch (valores) {
-                case "Artist":
+                case "Artist ->":
                     bTree = new BTree(4, SongComparate.byArtist());
                     break;
-                case "Name":
+                case "Name ->":
                     bTree = new BTree(4, SongComparate.byName());
                     break;
-                case "Popularity":
+                case "Popularity <-":
                     bTree = new BTree(4, SongComparate.byPopularity());
                     break;
-                case "Year":
+                case "Year <-":
                     bTree = new BTree(4, SongComparate.byYear());
                     break;
+                case "Artist <-":
+                    bTree = new BTree(4, SongComparate.byArtistDescending());
+                    break;
+                case "Name <-":
+                    bTree = new BTree(4, SongComparate.byNameDescending());
+                    break;
+                case "Popularity ->":
+                    bTree = new BTree(4, SongComparate.byPopularityAscending());
+                    break;
+                case "Year ->":
+                    bTree = new BTree(4, SongComparate.byYearAscending());
+                    break;
                 default:
-                    System.out.println("Unknown option selected"); 
+                    System.out.println("Unknown option selected");
                     return;
-            } 
+                }
             Node<Song> current = searchResults.getHead();
             while (current != null) {
                 Song song = current.getData();
@@ -500,7 +553,165 @@ public class Interfaz extends Application {
         }
         return null;
     }
+    private void showCollaborationDialog(Stage primaryStage, Trie music) {
+        Stage collaborationStage = new Stage();
+        collaborationStage.setTitle("Agregar Colaboración");
+
+        // Crear etiquetas para los campos
+        Label artistLabel = new Label("Artista:");
+        Label songLabel = new Label("Canción:");
+        Label yearLabel = new Label("Año:");
+        Label popularityLabel = new Label("Popularidad:");
+        Label idLabel = new Label("ID:");
+
+        // Crear campos de texto
+        TextField artistField = new TextField();
+        artistField.setPromptText("Agregar Artista");
+
+        TextField songField = new TextField();
+        songField.setPromptText("Agregar Canción");
+
+        TextField yearField = new TextField();
+        yearField.setPromptText("Agregar Año");
+
+        TextField popularityField = new TextField();
+        popularityField.setPromptText("Agregar Popularidad");
+
+        TextField idField = new TextField();
+        idField.setPromptText("Agregar ID");
+
+        // Lista doblemente ligada para colaboraciones
+        DoublyLinkedList<String> collaborations = new DoublyLinkedList<>();
+
+        // Botón para agregar artista
+        Button addArtistButton = new Button("Agregar Artista");
+        addArtistButton.setOnAction(event -> {
+            String artist = artistField.getText().trim();
+            if (!artist.isEmpty()) {
+                collaborations.add(artist);
+                artistField.clear();
+            }
+        });
+
+        // Botón para guardar
+        Button saveButton = new Button("Guardar");
+        saveButton.setOnAction(event -> {
+            // Obtener los datos de los campos de texto
+            String artistas = "";
+            String song = songField.getText().trim();
+            String year = yearField.getText().trim();
+            String popularity = popularityField.getText().trim();
+            String id = idField.getText().trim();
+            Node<String> current = collaborations.getHead();
+            while (current != null) {
+                artistas += current.getData() + ", ";
+                current = current.getNext();
+            }
+            // Verificar que todos los campos estén llenos
+            if (artistas.isEmpty() || song.isEmpty() || year.isEmpty() || popularity.isEmpty() || id.isEmpty()) {
+                // Puedes mostrar una alerta si alguno de los campos está vacío
+                new Alert(Alert.AlertType.WARNING, "Por favor, completa todos los campos.").showAndWait();
+            } else {
+                // Imprimir los datos en la consola (o procesarlos de otra manera)
+                System.out.print("Artistas: " + artistas);
+                System.out.println("Canción: " + song);
+                System.out.println("Año: " + year);
+                System.out.println("Popularidad: " + popularity);
+                System.out.println("ID: " + id);
+                music.insert(song, new Song(song, id, artistas, popularity, year));
+                // Cerrar el diálogo
+                collaborationStage.close();
+            }
+        });
+
+        // Botón para cancelar
+        Button cancelButton = new Button("Cancelar");
+        cancelButton.setOnAction(event -> collaborationStage.close());
+
+        // Botón para hacer gráfico
+        Button graphButton = new Button("Hacer Gráfico");
+        graphButton.setOnAction(event -> {
+            MyGraph graph = new MyGraph();
+            if (collaborations.getHead() == null) {
+                System.out.println("No search results found.");
+                return;
+            }
+            String song = songField.getText();
+            graph.addNode("Song " + song);
+            Node<String> current = collaborations.getHead();
+            while (current != null) {
+                String artist = current.getData();
+                graph.addNode("Artist " + artist);
+                graph.addEdge("Song " + song, "Artist " + artist);
+                current = current.getNext();
+            }
+            graph.printGraph();
+
+            // Crear y configurar el gráfico
+            Platform.runLater(() -> {
+                new Thread(() -> {
+                    Graph graphStream = graph.toGraphStream();
+                    System.setProperty("org.graphstream.ui", "swing");
+                    graphStream.display();
+                }).start();
+            });
+        });
+
+        // Crear y configurar el diseño
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+
+        // Diseños para los campos de entrada
+        HBox artistLayout = new HBox(10);
+        artistLayout.getChildren().addAll(artistLabel, artistField, addArtistButton);
+        artistLayout.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+        HBox songLayout = new HBox(10);
+        songLayout.getChildren().addAll(songLabel, songField);
+        songLayout.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+        HBox yearLayout = new HBox(10);
+        yearLayout.getChildren().addAll(yearLabel, yearField);
+        yearLayout.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+        HBox popularityLayout = new HBox(10);
+        popularityLayout.getChildren().addAll(popularityLabel, popularityField);
+        popularityLayout.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+        HBox idLayout = new HBox(10);
+        idLayout.getChildren().addAll(idLabel, idField);
+        idLayout.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+        // Botones en un HBox y centrado
+        HBox buttonLayout = new HBox(10);
+        buttonLayout.getChildren().addAll(saveButton, cancelButton, graphButton);
+        buttonLayout.setAlignment(javafx.geometry.Pos.CENTER);
+
+        // Añadir todos los elementos al diseño principal
+        layout.getChildren().addAll(artistLayout, songLayout, yearLayout, popularityLayout, idLayout, buttonLayout);
+
+        // Aplicar estilos
+        layout.setStyle("-fx-background-color: #f0f0f0; -fx-padding: 15;");
+        artistField.setStyle("-fx-border-color: #aaa; -fx-border-radius: 5;");
+        songField.setStyle("-fx-border-color: #aaa; -fx-border-radius: 5;");
+        yearField.setStyle("-fx-border-color: #aaa; -fx-border-radius: 5;");
+        popularityField.setStyle("-fx-border-color: #aaa; -fx-border-radius: 5;");
+        idField.setStyle("-fx-border-color: #aaa; -fx-border-radius: 5;");
+        addArtistButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        saveButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
+        cancelButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+        graphButton.setStyle("-fx-background-color: #FFC107; -fx-text-fill: white;");
+
+        // Crear la escena y mostrarla
+        Scene scene = new Scene(layout, 350, 250);
+        collaborationStage.setScene(scene);
+        collaborationStage.initOwner(primaryStage);
+        collaborationStage.initModality(Modality.WINDOW_MODAL);
+        collaborationStage.showAndWait();
+    }
+
+
 }
 
-
+  
 

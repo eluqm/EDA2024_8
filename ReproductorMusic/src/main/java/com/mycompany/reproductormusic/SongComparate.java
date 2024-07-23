@@ -37,4 +37,36 @@ public class SongComparate {
             }
         };
     }
+
+    public static Comparator<Song> byArtistDescending() {
+        return Comparator.comparing(Song::getArtist_track).reversed();
+    }
+
+    public static Comparator<Song> byNameDescending() {
+        return Comparator.comparing(Song::getName_track).reversed();
+    }
+
+    public static Comparator<Song> byPopularityAscending() {
+        return (s1, s2) -> {
+            try {
+                int pop1 = Integer.parseInt(s1.getPopularity());
+                int pop2 = Integer.parseInt(s2.getPopularity());
+                return Integer.compare(pop1, pop2); // Menor a mayor
+            } catch (NumberFormatException e) {
+                return s1.getPopularity().compareTo(s2.getPopularity());
+            }
+        };
+    }
+
+    public static Comparator<Song> byYearAscending() {
+        return (s1, s2) -> {
+            try {
+                int year1 = Integer.parseInt(s1.getYear());
+                int year2 = Integer.parseInt(s2.getYear());
+                return Integer.compare(year1, year2); // Menor a mayor
+            } catch (NumberFormatException e) {
+                return s1.getYear().compareTo(s2.getYear());
+            }
+        };
+    }
 }

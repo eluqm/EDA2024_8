@@ -40,31 +40,31 @@ public class Trie {
     }
     
     public DoublyLinkedList<Song> searchByPrefix(String prefix) {
-    TrieNode node = root;
-    for (char c : prefix.toCharArray()) {
-        node = node.children.get(c);
+        TrieNode node = root;
+        for (char c : prefix.toCharArray()) {
+            node = node.children.get(c);
+            if (node == null) {
+                return new DoublyLinkedList<>(); // Retorna lista vacía si el prefijo no se encuentra
+            }
+        }
+        DoublyLinkedList<Song> results = new DoublyLinkedList<>();
+        collectAllSongs(node, results);
+        return results;
+    }
+
+    private void collectAllSongs(TrieNode node, DoublyLinkedList<Song> results) {
         if (node == null) {
-            return new DoublyLinkedList<>(); // Retorna lista vacía si el prefijo no se encuentra
+            return;
+        }
+
+        if (node.isEndOfSong) {
+            results.concatenate(node.songInfoList);
+        }
+
+        for (TrieNode child : node.children.values()) {
+            collectAllSongs(child, results);
         }
     }
-    DoublyLinkedList<Song> results = new DoublyLinkedList<>();
-    collectAllSongs(node, results);
-    return results;
-}
-
-private void collectAllSongs(TrieNode node, DoublyLinkedList<Song> results) {
-    if (node == null) {
-        return;
-    }
-
-    if (node.isEndOfSong) {
-        results.concatenate(node.songInfoList);
-    }
-
-    for (TrieNode child : node.children.values()) {
-        collectAllSongs(child, results);
-    }
-}
     
     public void delete(Song song) {
         delete(root, song, 0);
