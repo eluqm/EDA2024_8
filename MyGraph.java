@@ -78,5 +78,14 @@ public class MyGraph {
     }
     
 
+    private String getNodeType(String node) {
+        if (node.startsWith("Song")) {
+            return "song";
+        } else if (node.startsWith("Artist")) {
+            return "artist";
+        } else {
+            return "";
+        }
+    }
 }
 
