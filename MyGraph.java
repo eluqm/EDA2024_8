@@ -26,6 +26,11 @@ public class MyGraph {
         adjList.get(from).add(to);
     }
 
-    
+    // Obtener los nodos adyacentes a un nodo
+    public List<String> getAdjNodes(String node) {
+        return adjList.getOrDefault(node, new ArrayList<>());
+    }
+
+
 }
 
