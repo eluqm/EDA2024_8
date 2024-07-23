@@ -38,6 +38,45 @@ public class MyGraph {
         }
     }
 
+    // Convertir a GraphStream Graph
+    public Graph toGraphStream() {
+        // Crear el gráfico de GraphStream
+        Graph graph = new SingleGraph("MyGraph");
+
+        // Añadir nodos y aristas al gráfico
+        for (String node : adjList.keySet()) {
+            // Añadir nodo si no existe
+            if (graph.getNode(node) == null) {
+                graph.addNode(node).setAttribute("ui.label", node);
+            }
+            for (String adj : adjList.get(node)) {
+                // Añadir nodo adyacente si no existe
+                if (graph.getNode(adj) == null) {
+                    graph.addNode(adj).setAttribute("ui.label", adj);
+                }
+                // Añadir arista si no existe
+                String edgeId = node + "-" + adj;
+                if (graph.getEdge(edgeId) == null) {
+                    graph.addEdge(edgeId, node, adj, true);
+                }
+            }
+        }
+
+        // Aplicar estilos CSS
+        String css = "node { size: 20px; text-size: 16px; text-color: black; text-style: bold; }" +
+                     "node.song { fill-color: blue; size: 40px; }" +
+                     "node.artist { fill-color: red; size: 40px; }" +
+                     "edge { text-size: 12px; }";
+        graph.setAttribute("ui.stylesheet", css);
+
+        // Asignar clases a los nodos
+        for (String node : adjList.keySet()) {
+            graph.getNode(node).setAttribute("ui.class", getNodeType(node));
+        }
+
+        return graph;
+    }
     
+
 }
 
